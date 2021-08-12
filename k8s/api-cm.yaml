@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+data:
+  MONGO_DETAILS: mongodb://mongo:27017
+kind: ConfigMap
+metadata:
+  name: titanic-cm

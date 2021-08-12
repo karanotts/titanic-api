@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: titanic-api
+  labels:
+    app: titanic
+    tier: api
+spec:
+  selector:
+    matchLabels:
+      app: titanic
+      tier: api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: titanic
+        tier: api
+    spec:
+      containers:
+      - name: titanic-api
+        image: karanotts/titanic:0.1
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: titanic-cm
+        env:
+        - name: MONGO_DETAILS
+          value: mongodb://mongo:27017
+        ports:
+        - containerPort: 8000
+          name: titanic-api
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /docs
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 5

@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: titanic-mongo
+  labels:
+    app: titanic
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: titanic
+      tier: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: titanic
+        tier: database
+    spec:
+      containers:
+      - image: mongo:latest
+        name: mongo
+        ports:
+        - containerPort: 27017
+          name: mongo
+        volumeMounts:
+        - name: mongo-data
+          mountPath: csv
+      restartPolicy: Always
+      volumes:
+        - name: mongo-data
+          configMap:
+            name: mongo-data

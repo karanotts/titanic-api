@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: titanic-api-svc
+  labels:
+    app: titanic
+    tier: api
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: titanic
+    tier: api
+  type: NodePort
